@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shaphan K. Dieu — Red Team Portfolio</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#030405;
+      --panel:#0b0d0f;
+      --neon-green:#3eff5b;
+      --accent-red:#ff3b3b;
+      --muted:#9aa3a6;
+      --glass: rgba(255,255,255,0.03);
+    }
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter,system-ui,Arial,"Helvetica Neue",sans-serif;
+      background:var(--bg);
+      color:#e7eef0;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* matrix canvas sits underneath content */
+    #matrix {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.6));
+    }
+
+    /* main container */
+    .wrap{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin: 2.5rem auto;
+      padding:2rem;
+    }
+
+    /* nav */
+    nav{
+      display:flex;
+      gap:1rem;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:1.25rem;
+      background:transparent;
+    }
+    .brand{
+      display:flex;
+      gap:.75rem;
+      align-items:center;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:8px;
+      background:linear-gradient(135deg,var(--accent-red),#b30b0b);
+      display:grid;place-items:center;font-weight:700;
+      font-family: "JetBrains Mono", monospace;
+      color:white;box-shadow:0 6px 18px rgba(179,11,11,0.25);
+    }
+    .brand h1{font-size:1rem;letter-spacing:.6px}
+    .navlinks{display:flex;gap:.5rem;align-items:center}
+    .navlinks a{
+      color:var(--muted); text-decoration:none; font-weight:600;
+      padding:.45rem .6rem;border-radius:6px;font-size:.9rem;
+      transition: all .18s ease;
+    }
+    .navlinks a:hover{color:var(--neon-green); transform:translateY(-2px)}
+
+    /* hero */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 320px;
+      gap:1.25rem;
+      align-items:center;
+      margin-bottom:1.25rem;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:1.25rem;
+      border-radius:12px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    }
+
+    .intro h2{font-family:"JetBrains Mono",monospace;color:var(--neon-green);margin-bottom:.4rem}
+    .intro p{color:var(--muted);line-height:1.5}
+    .cta{
+      margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;
+    }
+    .btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.07);
+      color:#fff;padding:.6rem .9rem;border-radius:8px;font-weight:700;
+      cursor:pointer;text-decoration:none;font-size:.9rem;
+      transition: all .16s ease;
+      display:inline-flex;gap:.6rem;align-items:center;
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent-red),#ff1f1f);
+      color:white;border:none;box-shadow:0 8px 26px rgba(255,59,59,0.12);
+    }
+    .btn.ghost{border:1px dashed rgba(255,255,255,0.06);color:var(--neon-green)}
+    .btn:hover{transform:translateY(-3px)}
+
+    /* side profile */
+    .profile{
+      padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:.75rem;align-items:center;
+      text-align:center;
+    }
+    .avatar{
+      width:96px;height:96px;border-radius:12px;background:linear-gradient(180deg,#111,#0a0a0a);
+      display:grid;place-items:center;font-family:"JetBrains Mono";font-weight:700;
+      color:var(--neon-green);font-size:1.5rem;border:1px solid rgba(0,255,0,0.06);
+    }
+    .meta{color:var(--muted);font-size:.9rem}
+
+    /* sections */
+    section.resume-section{margin-top:1rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+    .skills{display:flex;flex-direction:column;gap:.6rem}
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem}
+    .chip{background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:.45rem .6rem;border-radius:8px;font-family:"JetBrains Mono",mono;font-size:.85rem;color:var(--neon-green)}
+    .timeline{display:flex;flex-direction:column;gap:.6rem}
+    .job{background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); padding:.85rem;border-radius:8px;border-left:4px solid rgba(255,59,59,0.08)}
+    .job h4{margin-bottom:.25rem;font-size:1rem}
+    .job p{color:var(--muted);font-size:.92rem;line-height:1.45}
+
+    /* projects / footer */
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+    .project{min-height:120px;border-radius:10px;padding:.8rem;border:1px solid rgba(255,255,255,0.03)}
+    footer{margin-top:1.5rem;color:var(--muted);text-align:center;padding:1rem}
+
+    /* small screens */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;align-items:start}
+      section.resume-section{grid-template-columns:1fr}
+      .navlinks{display:none}
+    }
+
+    /* accessibility reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important}
+      #matrix{opacity:0.8}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- matrix canvas for falling numbers -->
+  <canvas id="matrix"></canvas>
+
+  <div class="wrap">
+    <nav>
+      <div class="brand">
+        <div class="logo">SK</div>
+        <div>
+          <h1 style="font-size:0.95rem">Shaphan K. Dieu</h1>
+          <div style="font-size:0.8rem;color:var(--muted)">Red Team | Cybersecurity | Phoenix, AZ</div>
+        </div>
+      </div>
+
+      <div class="navlinks" aria-hidden="true">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <main>
+      <header class="hero">
+        <div class="card intro">
+          <h2>&gt; Red Team Enthusiast</h2>
+          <p style="font-size:1.02rem">Motivated cybersecurity practitioner focused on offensive security, purple teaming, and building homelabs. Skilled with Linux CLI, CTFs, documentation, and practical red-team tooling. Fast learner, collaborative, and ready to apply hands-on skills to real-world engagements.</p>
+
+          <div class="cta">
+            <a class="btn primary" href="resume.pdf" download>
+              ⬇ Download Resume
+            </a>
+            <a class="btn ghost" href="#projects">View Projects</a>
+            <a class="btn" href="mailto:shaphandieu@gmail.com">Contact</a>
+          </div>
+
+          <div style="margin-top:1rem;color:var(--muted);font-size:.9rem">
+            <strong>Core:</strong> Linux CLI · CTFs · Purple Teaming · Homelab · TryHackMe / HTB
+          </div>
+        </div>
+
+        <aside class="card profile">
+          <div class="avatar">SK</div>
+          <div style="font-weight:700">Shaphan K. Dieu</div>
+          <div class="meta">Phoenix, AZ · (480) 803-7938 · <a href="mailto:shaphandieu@gmail.com" style="color:var(--neon-green);text-decoration:none">shaphandieu@gmail.com</a></div>
+          <div style="width:100%;margin-top:.5rem;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center">
+            <a class="btn" href="#contact" style="font-size:.85rem">Let's Talk</a>
+            <a class="btn" href="#experience" style="font-size:.85rem">Experience</a>
+          </div>
+        </aside>
+      </header>
+
+      <!-- main resume grid -->
+      <section class="resume-section">
+        <div class="card skills" id="about">
+          <h3 style="color:var(--neon-green);font-family:'JetBrains Mono',monospace">Skills</h3>
+          <div class="chips" style="margin-top:.5rem">
+            <div class="chip">Linux CLI</div>
+            <div class="chip">CTFs</div>
+            <div class="chip">Technical Writing</div>
+            <div class="chip">Purple Team</div>
+            <div class="chip">Homelab</div>
+            <div class="chip">Multilingual</div>
+            <div class="chip">Microsoft Office</div>
+            <div class="chip">Decision-making</div>
+          </div>
+
+          <h3 style="margin-top:1rem;color:var(--neon-green);font-family:'JetBrains Mono',monospace">Education</h3>
+          <div style="margin-top:.4rem;color:var(--muted)">
+            <div><strong>Grand Canyon University</strong> — B.S. Cybersecurity (Dec 2026)</div>
+            <div><strong>Phoenix College</strong> — Associate in Arts (May 2024)</div>
+            <div style="margin-top:.4rem">GPA: 3.48</div>
+          </div>
+        </div>
+
+        <div class="card timeline" id="experience">
+          <h3 style="color:var(--neon-green);font-family:'JetBrains Mono',monospace">Experience</h3>
+
+          <div class="job" style="margin-top:.6rem">
+            <h4>City of Phoenix — Recreation Instructor <span style="float:right;color:var(--muted);font-size:.85rem">Aug 2024–Present</span></h4>
+            <p>Mentored and supervised groups, delivered clear instruction, ensured safety during programs, and supported coordination tasks — strong interpersonal and leadership experience.</p>
+          </div>
+
+          <div class="job">
+            <h4>Safeway — Courtesy Clerk <span style="float:right;color:var(--muted);font-size:.85rem">Dec 2023–Aug 2024</span></h4>
+            <p>Performed customer service, cashiering, and logistics tasks; supported accessibility and accuracy in transactions.</p>
+          </div>
+
+          <h3 style="margin-top:.6rem;color:var(--neon-green);font-family:'JetBrains Mono',monospace">Volunteer</h3>
+          <div style="color:var(--muted);margin-top:.4rem">
+            New World Educational Center (2022–2023) · Phoenix College Preparatory Academy (2021–2023)
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:1rem">
+        <h3 style="color:var(--neon-green);margin-bottom:.6rem;font-family:'JetBrains Mono',monospace">Projects & Cybersecurity</h3>
+        <div class="projects" id="projects">
+          <div class="project card">
+            <strong>Cyberdorm Project</strong>
+            <div style="color:var(--muted);margin-top:.5rem">Built hackable infrastructure using VMs and IP segmentation for practical red/blue scenarios.</div>
+          </div>
+          <div class="project card">
+            <strong>CTFs & Labs</strong>
+            <div style="color:var(--muted);margin-top:.5rem">TryHackMe · HackTheBox · OverTheWire (Bandit) — documented walkthroughs and progress.</div>
+          </div>
+          <div class="project card">
+            <strong>Purple Teaming</strong>
+            <div style="color:var(--muted);margin-top:.5rem">Self-trained purple team exercises focusing on detection and emulation of adversary TTPs.</div>
+          </div>
+          <div class="project card">
+            <strong>Homelab</strong>
+            <div style="color:var(--muted);margin-top:.5rem">Self-hosted lab for practicing pentesting, automation, and network tooling.</div>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:1rem" id="contact">
+        <div class="card">
+          <h3 style="color:var(--neon-green);font-family:'JetBrains Mono',monospace">Contact</h3>
+          <p style="color:var(--muted);margin-top:.4rem">Email: <a href="mailto:shaphandieu@gmail.com" style="color:var(--neon-green)">shaphandieu@gmail.com</a> · Phone: (480) 803-7938</p>
+          <p style="color:var(--muted);margin-top:.6rem">If you'd like, I can add: GitHub link, TryHackMe profile, downloadable badges, or an embedded video walkthrough.</p>
+        </div>
+      </section>
+
+      <footer>
+        <div>© 2025 Shaphan K. Dieu · Designed for Red Team style</div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Matrix JS -->
+  <script>
+    // Matrix code adapted to be small, performant and accessible
+    (function(){
+      const canvas = document.getElementById('matrix');
+      const ctx = canvas.getContext('2d');
+      let width, height, columns, drops;
+
+      function resize(){
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        const fontSize = 16 * (window.devicePixelRatio || 1);
+        columns = Math.floor(width / fontSize);
+        drops = new Array(columns).fill(1);
+        ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+      }
+
+      function randChar() {
+        // hex & binary-like characters plus digits and some letters for "hacker" vibe
+        const chars = "00100101010";
+        return chars.charAt(Math.floor(Math.random()*chars.length));
+      }
+
+      function draw(){
+        // subtle darken to create tail effect
+        ctx.fillStyle = "rgba(0,0,0,0.12)";
+        ctx.fillRect(0,0,width,height);
+
+        const fontSize = parseInt(ctx.font,10);
+        ctx.fillStyle = "rgba(62,255,91,0.85)"; // neon green
+        ctx.shadowColor = "rgba(62,255,91,0.15)";
+        ctx.shadowBlur = 6;
+
+        for(let i=0;i<columns;i++){
+          const text = randChar();
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+          ctx.fillText(text, x, y);
+
+          if(y > height && Math.random() > 0.975) drops[i]=0;
+          drops[i]++;
+        }
+        requestAnimationFrame(draw);
+      }
+
+      // Respect reduced motion
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if(reduce && reduce.matches){
+        canvas.style.display='none';
+      } else {
+        resize();
+        draw();
+        window.addEventListener('resize', resize);
+      }
+    })();
+  </script>
+
+</body>
+</html>
