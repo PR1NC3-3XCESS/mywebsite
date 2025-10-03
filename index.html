@@ -1,5 +1,3 @@
-<!doctype html>
-<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,35 +7,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    :root{
+    :root {
       --bg:#030405;
       --panel:#0b0d0f;
       --neon-green:#3eff5b;
       --accent-red:#ff3b3b;
       --muted:#9aa3a6;
       --glass: rgba(255,255,255,0.03);
-     }
+    }
 
     /* Reset */
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:'Fira Code', monospace ,Arial,"Helvetica Neue",sans-serif;
-      background:var(--bg);
-      color: white ;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Fira Code', monospace, Arial, "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
-      
+
+    /* Neon green glowing headers */
     h1, h2, h3, h4 {
       color: var(--neon-green);
       font-weight: bold;
       text-shadow:
-	0 0 5px var(--neon-green) ,
-	0 0 10px var(--neon-green) , 
-	0 0 20px var(--neon-green) ;
-}
+        0 0 5px var(--neon-green),
+        0 0 10px var(--neon-green),
+        0 0 20px var(--neon-green);
+    }
+
+    /* keep the rest of your stylesheet afterwards... */
   </style>
 </head>
 
