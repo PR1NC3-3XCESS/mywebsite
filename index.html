@@ -16,19 +16,30 @@
       --accent-red:#ff3b3b;
       --muted:#9aa3a6;
       --glass: rgba(255,255,255,0.03);
-       
-    }
+     }
+
     /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
       font-family:'Fira Code', monospace ,Arial,"Helvetica Neue",sans-serif;
       background:var(--bg);
-      color:#e7eef0;
+      color: white ;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       overflow-x:hidden;
     }
+      
+    h1, h2, h3, h4 {
+      color: var(--neon-green);
+      font-weight: bold;
+      text-shadow:
+	0 0 5px var(--neon-green) ,
+	0 0 10px var(--neon-green) , 
+	0 0 20px var(--neon-green) ;
+}
+  </style>
+</head>
 
     /* matrix canvas sits underneath content */
     #matrix {
@@ -278,7 +289,7 @@
         <div class="card">
           <h3 style="color:var(--neon-green);font-family:'JetBrains Mono',monospace">Contact</h3>
           <p style="color:var(--muted);margin-top:.4rem">Email: <a href="mailto:shaphandieu@gmail.com" style="color:var(--neon-green)">shaphandieu@gmail.com</a> · Phone: (480) 803-7938</p>
-          <p style="color:var(--muted);margin-top:.6rem">If you'd like, I can add: GitHub link, TryHackMe profile, downloadable badges, or an embedded video walkthrough.</p>
+
         </div>
       </section>
 
