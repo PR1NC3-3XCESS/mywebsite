@@ -439,7 +439,23 @@
           const x = i * fontSize;
           const y = drops[i] * fontSize;
           ctx.fillText(text, x, y);
-          if (y > height && Math
+
+          if (y > height && Math.random() > 0.975) drops[i]=0;
+      drops[i]++;
+    }
+    requestAnimationFrame(draw);
+  }
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if(reduce && reduce.matches){
+    canvas.style.display='none';
+  } else {
+    resize();
+    draw();
+    window.addEventListener('resize', resize);
+  }
+})();
+</script>
 
 
 
